@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    <section class="modal hidden">
+            <label for="playerOneInput">Player One</label>
+            <input type="text" id="playerOneInput">
+            <label for="playerTwoInput">Player two</label>
+            <input type="text" id="playerTwoInput">
+            <button value="circle" id="circle">
+                <img src="pictures/circle-ring.png" alt="circle">
+            </button>
+            <button value="x" id="x">
+                <img src="pictures/close.png" alt="x">
+            </button>
+            <button class="btn-close">x</button>
+            <button type="submit" class="send-btn">Start</button>
+    </section>
+    <div class="overlay hidden"></div>
+    <button class="btn btn-open">Lets Play</button>
+    <div class="gameboard-container">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    --o-figure: url('pictures/circle-ring.png');
+    --x-figure: url('pictures/close.png');
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #222;
+    position: relative;
+    min-height: 100vh;
+}
+.modal{
+    z-index: 2;
+}
+.overlay{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
+.hidden{
+    display: none;
+}
+.gameboard-container{
+    display: flex;
+    flex-wrap: wrap;
+    height: 500px;
+    width: 500px;
+}
+.gameboard-container .spot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 166px;
+    cursor: pointer;
+}
+.gameboard-container #spot-0, #spot-1, #spot-2{
+    border-bottom: 1px solid black;
+}
+.gameboard-container #spot-3, #spot-4, #spot-5{
+    border-bottom: 1px solid black;
+}
+.gameboard-container #spot-1, #spot-4, #spot-7{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+img{
+    height: 30px;
+}
+
+.circle{
+    background: var(--o-figure);
+    background-size: cover;
+}
+.x{
+    background: var(--x-figure);
+    background-size: cover;
+}
