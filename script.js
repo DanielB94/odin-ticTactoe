@@ -2,7 +2,6 @@
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector('.overlay');
 const openModalBtn = document.querySelector('.btn-open');
-const closeModalBtn = document.querySelector('.btn-close');
 
 const openModal = (e) => {
     modal.classList.remove('hidden');
@@ -14,8 +13,10 @@ const closeModal = () => {
     overlay.classList.add('hidden');
 };
 
-openModalBtn.addEventListener('click', openModal);
-closeModalBtn.addEventListener('click', closeModal);
+openModalBtn.addEventListener('click', () => {
+    openModal,
+    location.reload();
+});
 
 // Gameboard display
 const gameboard = (() =>{
@@ -44,53 +45,123 @@ const gameboard = (() =>{
 
 })();
 
-let firstMark = '';
-let secondMark = '';
+const boardArray = gameboard.gameboardArray;
+
+
+const player = (name, mark) => {
+    
+    const symbol = (div, mark) => {
+        
+        div.classList.add(mark);
+        
+        if (gameFlow.winner(mark)) {
+            gameFlow.endGame(false, name, mark);
+        }
+        else if (gameFlow.draw(mark)) {
+            gameFlow.endGame(true, name, mark);
+        };
+    };
+    
+    return { name, mark, symbol };
+    
+};
+
+const x = document.querySelector('#x');
+const circle = document.querySelector('#circle');
 const playerOneInput = document.querySelector('#playerOneInput').value;
 const playerTwoInput = document.querySelector('#playerTwoInput').value;
 
-const player = (name, mark) => {
+const formHandler = () => {
 
-    const circle = document.querySelector('#circle');
-    const x = document.querySelector('#x');
+    
+    const check = (e) => {
+        if (e == 'circle') {
+        firstMark = circle.id;
+        secondMark = x.id;
+        }
+        else {
+            firstMark = x.id;
+            secondMark = circle.id;
+        };
+    }
+            
+        const playerOne = player(playerOneInput, check.firstMark);
+        const playerTwo = player(playerTwoInput, check.secondMark);
+            
+        return [ check, playerOne, playerTwo ];
+}
 
-    circle.addEventListener('click', () => {
-        firstMark = circle.value;
-        secondMark = x.value;
-    });
+const [check, playerOne, playerTwo] = formHandler();
 
-    x.addEventListener('click', () => {
-        firstMark = x.value;
-        secondMark = circle.value;
-    });
+circle.addEventListener('click', (e) => {
+    check(e.target.id);
+    console.log(e);
+    closeModal();
+});
 
-    return { name, mark };
 
-};
-
-    const playerOne = player(playerOneInput);
-    const playerTwo = player(playerTwoInput);
+x.addEventListener('click', (e) => {
+    check(e.target.id);
+    closeModal();
+});
 
 let switcher = true;
 
-gameboard.gameboardArray.forEach(div => {
+const gameFlow = (() => {
+
+const switchTurns = () => {
+boardArray.forEach(div => {
     
     div.addEventListener('click', () => {
         
-        if (firstMark == '' && secondMark == '') {
-            alert("You haven't selected a mark");
-        }
-        else{
-            if(switcher) {
+        if(switcher) {
             switcher = !switcher;
-            div.classList.add(firstMark);
-            console.log(switcher);
+            playerOne.symbol(div, firstMark);
         }
         else {
             switcher = true;
-            div.classList.add(secondMark);
-            console.log(switcher);
+            playerTwo.symbol(div, secondMark);
         };
-    }
-    });
+    }, {once: true});
 });
+}
+
+const winner = (e) => {
+    const winnerCombos = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+    
+    return winnerCombos.some(combination => {
+        return combination.every(index => {
+            return boardArray[index].classList.contains(e);
+        }); 
+    });          
+};
+
+const draw = (mark) => {
+    return [...boardArray].every(div => {
+        return div.classList.contains("circle") || div.classList.contains("x");
+    });
+}
+
+const endGame = (draw, name, mark) => {
+    if(draw) {
+       alert('it is a draw!');
+       location.reload();
+    }
+    else {
+        alert(name + ' with ' + mark + ' has won');
+        location.reload();
+    }
+};
+    return { switchTurns, winner, draw, endGame }
+})();
+
+gameFlow.switchTurns();
